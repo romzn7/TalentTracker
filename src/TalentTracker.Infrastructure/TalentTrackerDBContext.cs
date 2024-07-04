@@ -31,6 +31,7 @@ public class TalentTrackerDBContext : DbContextBase<TalentTrackerDBContext>
         modelBuilder
            .ApplyConfiguration(new EventLogEntityConfiguration())
            .ApplyConfiguration(new EventTypeEntityConfiguration())
+           .ApplyConfiguration(new CandidateEntityConfiguration())
            ;
     }
 }

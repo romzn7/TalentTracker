@@ -16,9 +16,14 @@ public class Candidate : AuditableEntity, IAggregateRoot
     public string FreeTextComment { get; private set; }
 
     public SocialMediaLinks SocialMediaLinks { get; set; }
+    public Candidate()
+    {
+            
+    }
 
     public Candidate(string firstName, string lastName, string phoneNumber, string email, string timeIntervalToCall, string freeTextComment)
     {
+        CandidateGUID = Guid.NewGuid();
         FirstName = Guard.Against.NullOrEmpty(firstName);
         LastName = Guard.Against.NullOrEmpty(lastName);
         PhoneNumber = Guard.Against.NullOrEmpty(phoneNumber);
@@ -30,8 +35,9 @@ public class Candidate : AuditableEntity, IAggregateRoot
     }
     public void SetSocialMediaLinks(SocialMediaLinks socialMediaLinks) => SocialMediaLinks = Guard.Against.Null(socialMediaLinks);
 
-    public void UpdateCandidate(string firstName, string lastName, string phoneNumber, string email, string timeIntervalToCall, string freeTextComment)
+    public void UpdateCandidate(Guid candidateGuid, string firstName, string lastName, string phoneNumber, string email, string timeIntervalToCall, string freeTextComment)
     {
+        CandidateGUID = Guard.Against.Default(candidateGuid);
         FirstName = Guard.Against.NullOrEmpty(firstName);
         LastName = Guard.Against.NullOrEmpty(lastName);
         PhoneNumber = Guard.Against.NullOrEmpty(phoneNumber);
@@ -43,10 +49,10 @@ public class Candidate : AuditableEntity, IAggregateRoot
     }
     #region Domain Events
     private void _AddCandidateAddedEvent()
-        => AddDomainEvent(new CandidateAddedEvent(this.Id, this.CandidateGUID, this.Email, this.AddedBy));
+        => AddDomainEvent(new CandidateAddedEvent(this.Id, this.CandidateGUID, this.Email, 1));
 
     private void _AddCandidateUpdatedEvent()
-        => AddDomainEvent(new CandidateUpdatedEvent(this.Id, this.CandidateGUID,  this.AddedBy));
+        => AddDomainEvent(new CandidateUpdatedEvent(this.Id, this.CandidateGUID,  1));
 
     #endregion
 }

@@ -12,7 +12,7 @@ namespace TalentTracker.Domain.Aggregates.Events.Entities;
 public class EventLog : AuditableEntity, IAggregateRoot
 {
     protected EventLog() { }
-    public EventLog(Guid eventLogGUID, EventType eventType, string description, int userId)
+    public EventLog(Guid eventLogGUID, EventType eventType, string description, int userId=1)
     {
         Guard.Against.Default(eventLogGUID);
         Guard.Against.Null(eventType);

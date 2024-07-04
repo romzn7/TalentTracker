@@ -4,6 +4,7 @@ using TalentTracker.Api.DependencyResolution;
 using TalentTracker.Web.DependencyResolution;
 using MediatR;
 using TalentTracker.Shared.Application.Behaviors;
+using TalentTracker.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,7 @@ builder.Services.AddSwaggerGen(_ =>
 
 var app = builder.Build();
 
+app.UseTalentTrackerMigration();
 app.UseTalentTrackerSwagger(builder.Configuration, builder.Environment, endpoints =>
 {
     endpoints.UseTalentTrackerSwaggerEndpoints();
