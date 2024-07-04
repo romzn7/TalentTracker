@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using System.Net;
 using TalentTracker.Domain.Aggregates.Candidates.Events;
 using TalentTracker.Domain.Aggregates.Candidates.ValueObjects;
 using TalentTracker.Shared.DomainDesign;
