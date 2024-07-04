@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using TalentTracker.Application.Common.Repositories;
+using TalentTracker.Domain.Aggregates.Candidates.Entities;
 using TalentTracker.Domain.Aggregates.Candidates.ValueObjects;
 using TalentTracker.Shared.Mappings;
 
@@ -59,25 +60,47 @@ public static class CreateCandidate
         readonly ILogger<Handler> _logger;
         readonly IMapper _mapper;
         readonly ICandidateRepository _candidateRepository;
+        private readonly IReadOnlyCandidateRepository _readOnlyCandidateRepository;
+
         public Handler(ILogger<Handler> logger,
             IMapper mapper,
-            ICandidateRepository candidateRepository)
+            ICandidateRepository candidateRepository,
+            IReadOnlyCandidateRepository readOnlyCandidateRepository)
         {
             _logger = logger;
             _mapper = mapper;
             _candidateRepository=candidateRepository;
+            _readOnlyCandidateRepository=readOnlyCandidateRepository;
         }
         public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             try
             {
-                Domain.Aggregates.Candidates.Entities.Candidate candidate = new(request.FirstName, request.LastName,
-                                                                                request.PhoneNumber, request.Email,
-                                                                                request.TimeIntervalToCall, request.FreeTextComment);
+                var response = new Domain.Aggregates.Candidates.Entities.Candidate();
 
-                candidate.SetSocialMediaLinks(new SocialMediaLinks(request.LinkedinProfileUrl, request.GithubProfileUrl));
+                // Check if candidate exist in db
+                var savedCandidate = await _readOnlyCandidateRepository.IsExist(request.Email, cancellationToken);
 
-                var response = await _candidateRepository.CreateAsync(candidate, cancellationToken);
+                if (savedCandidate == null) // if null -> create new
+                {
+                    Domain.Aggregates.Candidates.Entities.Candidate candidate = new(request.FirstName, request.LastName,
+                                                                                    request.PhoneNumber, request.Email,
+                                                                                    request.TimeIntervalToCall, request.FreeTextComment);
+
+                    candidate.SetSocialMediaLinks(new SocialMediaLinks(request.LinkedinProfileUrl, request.GithubProfileUrl));
+
+                    response = await _candidateRepository.CreateAsync(candidate, cancellationToken);
+                }
+                else // if not null -> update the old entity
+                {
+                    savedCandidate.UpdateCandidate(savedCandidate.CandidateGUID, request.FirstName, request.LastName,
+                                                    request.PhoneNumber, request.Email,
+                                                    request.TimeIntervalToCall, request.FreeTextComment);
+
+                    savedCandidate.SetSocialMediaLinks(new SocialMediaLinks(request.LinkedinProfileUrl, request.GithubProfileUrl));
+                    
+                    response = await _candidateRepository.UpdateAsync(savedCandidate, cancellationToken);
+                }
 
                 await _candidateRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
