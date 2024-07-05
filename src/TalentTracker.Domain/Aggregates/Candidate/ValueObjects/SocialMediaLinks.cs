@@ -13,8 +13,8 @@ public class SocialMediaLinks : ValueObject
 
     public SocialMediaLinks(string linkedinProfileUrl, string githubProfileUrl)
     {
-        LinkedinProfileUrl= Guard.Against.NullOrEmpty(linkedinProfileUrl);
-        GithubProfileUrl= Guard.Against.NullOrEmpty(githubProfileUrl);
+        LinkedinProfileUrl= linkedinProfileUrl;
+        GithubProfileUrl= githubProfileUrl;
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {
