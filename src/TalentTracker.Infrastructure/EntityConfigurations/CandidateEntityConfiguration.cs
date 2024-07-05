@@ -28,6 +28,9 @@ internal class CandidateEntityConfiguration : IEntityTypeConfiguration<Candidate
         builder.Property(x => x.Email)
             .IsRequired(true);
 
+        builder.HasIndex(e => e.Email)
+                  .IsUnique();
+
         builder.Property(x => x.PhoneNumber)
             .IsRequired(false);
 
