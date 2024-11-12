@@ -4,6 +4,7 @@ using FluentValidation;
 using Moq;
 using TalentTracker.Application.Commands.Candidate;
 using TalentTracker.Application.Common.Repositories;
+using TalentTracker.Domain.Aggregates.Candidates.Entities;
 using TalentTracker.Domain.Aggregates.Candidates.ValueObjects;
 using TalentTracker.Shared.DomainDesign;
 using TalentTracker.Shared.Tests;
@@ -22,6 +23,7 @@ internal class CreateCandidateTests : HandlerTestBase<CreateCandidate.Handler, C
     private string _linkedinProfileUrl;
     private string _githubProfileUrl;
     private SocialMediaLinks _SocialMediaLinks;
+    private Domain.Aggregates.Candidates.Entities.Candidate _Candidate;
 
     public override void SetupServices()
     {
@@ -40,15 +42,20 @@ internal class CreateCandidateTests : HandlerTestBase<CreateCandidate.Handler, C
         _linkedinProfileUrl = Fixture.Create<string>();
         _githubProfileUrl = Fixture.Create<string>();
 
-        _SocialMediaLinks = Fixture.Create<SocialMediaLinks>();
+        _SocialMediaLinks = new(_linkedinProfileUrl, _githubProfileUrl);
+        _Candidate = new(_firstName, _lastName, _phoneNumber, _email, _timeIntervalToCall, _freeTextComment);
 
         Mocker.GetMock<IReadOnlyCandidateRepository>()
              .Setup(x => x.IsExist(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Fixture.Create<Domain.Aggregates.Candidates.Entities.Candidate>());
+            .ReturnsAsync(_Candidate);
 
         Mocker.GetMock<ICandidateRepository>()
             .Setup(x => x.CreateAsync(It.IsAny<Domain.Aggregates.Candidates.Entities.Candidate>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Fixture.Create<Domain.Aggregates.Candidates.Entities.Candidate>());
+            .ReturnsAsync(_Candidate);
+
+        Mocker.GetMock<ICandidateRepository>()
+            .Setup(x => x.UpdateAsync(It.IsAny<Domain.Aggregates.Candidates.Entities.Candidate>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(_Candidate);
 
     }
 
@@ -162,7 +169,7 @@ internal class CreateCandidateTests : HandlerTestBase<CreateCandidate.Handler, C
           .Verify(x => x.IsExist(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
 
         Mocker.GetMock<ICandidateRepository>()
-            .Verify(x => x.CreateAsync(It.IsAny<Domain.Aggregates.Candidates.Entities.Candidate>(), It.IsAny<CancellationToken>()), Times.Once);
+            .Verify(x => x.UpdateAsync(It.IsAny<Domain.Aggregates.Candidates.Entities.Candidate>(), It.IsAny<CancellationToken>()), Times.Once);
 
         Mocker.GetMock<ICandidateRepository>()
             .Verify(x => x.UnitOfWork.SaveEntitiesAsync(It.IsAny<CancellationToken>()), Times.Once);
