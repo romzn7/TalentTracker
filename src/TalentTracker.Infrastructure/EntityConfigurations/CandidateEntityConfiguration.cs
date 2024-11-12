@@ -1,7 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Net;
 using TalentTracker.Domain.Aggregates.Candidates.Entities;
 
 namespace TalentTracker.Infrastructure.EntityConfigurations;

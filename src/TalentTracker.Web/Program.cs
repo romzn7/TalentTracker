@@ -43,7 +43,7 @@ app.UseTalentTrackerSwagger(builder.Configuration, builder.Environment, endpoint
     endpoints.UseTalentTrackerSwaggerEndpoints();
 });
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseApplicationCORS();

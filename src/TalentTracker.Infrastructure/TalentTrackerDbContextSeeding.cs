@@ -24,6 +24,8 @@ internal class TalentTrackerDbContextSeeding
                 if (settings.Value.EnableMigrationSeed)
                 {
                     await _MigrateEnumeration(context, context.EventTypes);
+                    await _MigrateEnumeration(context, context.MeasurementUnitTypes);
+                    await _MigrateEnumeration(context, context.Ingredients);
                 }
             }
         });

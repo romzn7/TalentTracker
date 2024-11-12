@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TalentTracker.Domain.Aggregates.Candidates.Entities;
+using TalentTracker.Domain.Aggregates.Container.Entities;
+using TalentTracker.Domain.Aggregates.Container.Enumerations;
 using TalentTracker.Domain.Aggregates.Events.Entities;
 using TalentTracker.Domain.Aggregates.Events.Enumerations;
 using TalentTracker.Infrastructure.EntityConfigurations;
@@ -24,6 +26,10 @@ public class TalentTrackerDBContext : DbContextBase<TalentTrackerDBContext>
     public virtual DbSet<EventLog> EventLogs { get; set; } = null!;
     public virtual DbSet<EventType> EventTypes { get; set; } = null!;
     public virtual DbSet<Candidate> Candidates { get; set; } = null!;
+    public virtual DbSet<Container> Containers { get; set; } = null!;
+    public virtual DbSet<ContainerIngredient> ContainerIngredients { get; set; } = null!;
+    public virtual DbSet<Ingredient> Ingredients { get; set; } = null!;
+    public virtual DbSet<MeasurementUnitType> MeasurementUnitTypes { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,6 +38,10 @@ public class TalentTrackerDBContext : DbContextBase<TalentTrackerDBContext>
            .ApplyConfiguration(new EventLogEntityConfiguration())
            .ApplyConfiguration(new EventTypeEntityConfiguration())
            .ApplyConfiguration(new CandidateEntityConfiguration())
+           .ApplyConfiguration(new ContainerEntityConfiguration())
+           .ApplyConfiguration(new ContainerIngredientEntityConfiguration())
+           .ApplyConfiguration(new IngredientEntityConfiguration())
+           .ApplyConfiguration(new MeasurementUnitTypeEntityConfiguration())
            ;
     }
 }
