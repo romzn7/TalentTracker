@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TalentTracker.Infrastructure;
 
@@ -11,9 +12,11 @@ using TalentTracker.Infrastructure;
 namespace TalentTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(TalentTrackerDBContext))]
-    partial class TalentTrackerDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240705041025_EmailUniqueConstraint")]
+    partial class EmailUniqueConstraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
