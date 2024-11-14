@@ -27,7 +27,9 @@ public class TalentTrackerDBContext : DbContextBase<TalentTrackerDBContext>
     public virtual DbSet<EventType> EventTypes { get; set; } = null!;
     public virtual DbSet<Candidate> Candidates { get; set; } = null!;
     public virtual DbSet<Container> Containers { get; set; } = null!;
-    public virtual DbSet<ContainerIngredient> ContainerIngredients { get; set; } = null!;
+    public virtual DbSet<WorkProcess> WorkProcesses { get; set; } = null!;
+    public virtual DbSet<WorkProcessIngredient> WorkProcessIngredients { get; set; } = null!;
+    public virtual DbSet<WorkProcessDetail> WorkProcessDetails{ get; set; } = null!;
     public virtual DbSet<Ingredient> Ingredients { get; set; } = null!;
     public virtual DbSet<MeasurementUnitType> MeasurementUnitTypes { get; set; } = null!;
 
@@ -39,9 +41,11 @@ public class TalentTrackerDBContext : DbContextBase<TalentTrackerDBContext>
            .ApplyConfiguration(new EventTypeEntityConfiguration())
            .ApplyConfiguration(new CandidateEntityConfiguration())
            .ApplyConfiguration(new ContainerEntityConfiguration())
-           .ApplyConfiguration(new ContainerIngredientEntityConfiguration())
-           .ApplyConfiguration(new IngredientEntityConfiguration())
            .ApplyConfiguration(new MeasurementUnitTypeEntityConfiguration())
+           .ApplyConfiguration(new IngredientEntityConfiguration())
+           .ApplyConfiguration(new WorkProcessEntityConfiguration())
+           .ApplyConfiguration(new WorkProcessDetailEntityConfiguration())
+           .ApplyConfiguration(new WorkProcessIngredientEntityConfiguration())
            ;
     }
 }

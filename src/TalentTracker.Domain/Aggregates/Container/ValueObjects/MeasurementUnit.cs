@@ -14,14 +14,14 @@ public class MeasurementUnit : ValueObject
 
     }
 
-    public MeasurementUnit(MeasurementUnitType measurementUnitType, string name)
+    public MeasurementUnit(MeasurementUnitType measurementUnitType, string value)
     {
         Type = measurementUnitType;
-        Name = Guard.Against.NullOrEmpty(name);
+        Value = Guard.Against.NullOrEmpty(value);
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Type;
-        yield return Name;
+        yield return Value;
     }
 }

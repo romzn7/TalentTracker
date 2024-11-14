@@ -14,6 +14,12 @@ internal class MeasurementUnitTypeEntityConfiguration : IEntityTypeConfiguration
         // Primary Key
         builder.HasKey(x => x.Id);
 
+        builder.Property(ct => ct.Id)
+            .HasDefaultValue(1)
+            .ValueGeneratedNever()
+            .HasConversion<int>()
+            .IsRequired();
+
         // Properties
         builder.Property(x => x.Name)
             .IsRequired()

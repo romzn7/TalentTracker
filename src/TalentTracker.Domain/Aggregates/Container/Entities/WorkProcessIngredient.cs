@@ -5,24 +5,28 @@ using TalentTracker.Shared.DomainDesign;
 
 namespace TalentTracker.Domain.Aggregates.Container.Entities;
 
-public class ContainerIngredient : AuditableEntity, IAggregateRoot
+public class WorkProcessIngredient : AuditableEntity, IAggregateRoot
 {
-    public Guid ContainerIngredientGUID { get; private set; }
-    public int ContainerID { get; private set; }
+    public Guid WorkProcessIngredientGUID { get; private set; }
+    public int WorkProcessID { get; private set; }
     public int IngredientID { get; private set; }
     public MeasurementUnit MeasurementUnit { get; private set; }
     public DateTime Date { get; private set; }
     public Quantity Quantity { get; private set; }
 
     // Navigation Properties
-    public Container Container { get; private set; }
+    public WorkProcess WorkProcess { get; private set; }
     public Ingredient Ingredient { get; private set; }
 
-    // Constructor for setting properties
-    public ContainerIngredient(int ingredientID, MeasurementUnit measurementUnit,
-                            DateTime date, Quantity quantity)
+    public WorkProcessIngredient()
     {
-        ContainerIngredientGUID = Guid.NewGuid();
+            
+    }
+
+    // Constructor for setting properties
+    public WorkProcessIngredient(int ingredientID, MeasurementUnit measurementUnit, DateTime date, Quantity quantity)
+    {
+        WorkProcessIngredientGUID = Guid.NewGuid();
         IngredientID = Guard.Against.NegativeOrZero(ingredientID);
         MeasurementUnit = Guard.Against.Default(measurementUnit);
         Date = Guard.Against.Default(date);

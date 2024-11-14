@@ -13,6 +13,11 @@ internal class IngredientEntityConfiguration : IEntityTypeConfiguration<Ingredie
 
         builder.HasKey(x => x.Id);
 
+        builder.Property(ct => ct.Id)
+            .HasDefaultValue(1)
+            .ValueGeneratedNever()
+            .IsRequired();
+
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(50);
