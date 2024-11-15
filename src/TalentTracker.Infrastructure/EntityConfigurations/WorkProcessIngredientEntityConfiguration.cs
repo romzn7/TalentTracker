@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TalentTracker.Domain.Aggregates.Container.Entities;
+using TalentTracker.Domain.Aggregates.Container.Enumerations;
 using TalentTracker.Domain.Aggregates.Container.ValueObjects;
 
 namespace TalentTracker.Infrastructure.EntityConfigurations;
@@ -28,12 +29,18 @@ internal class WorkProcessIngredientEntityConfiguration : IEntityTypeConfigurati
         builder.OwnsOne(x => x.MeasurementUnit, mu =>
         {
             mu.Property(p => p.Type)
-               .IsRequired()
-               .HasConversion<int>();
+               .IsRequired().HasConversion(new MeasurementUnitTypeValueConverter());
 
             mu.Property(p => p.Value)
                .IsRequired();
         });
+
+        //builder.Property(x => x.MeasurementUnitType)
+        //   .HasConversion<int>()
+        //   .IsRequired();
+
+        //builder.Property(x => x.MeasurementValue)
+        //    .IsRequired();
 
         builder.Property(x => x.Date)
             .IsRequired();
@@ -44,6 +51,11 @@ internal class WorkProcessIngredientEntityConfiguration : IEntityTypeConfigurati
             .HasColumnName("Value")
             .IsRequired();
         });
+
+        //builder.HasOne(wpi => wpi.WorkProcess)
+        //    .WithMany(wp => wp.WorkProcessIngredients)
+        //    .HasForeignKey(wpi => wpi.WorkProcessID)
+        //    .IsRequired();
 
         builder.HasOne(x => x.Ingredient)
             .WithMany()

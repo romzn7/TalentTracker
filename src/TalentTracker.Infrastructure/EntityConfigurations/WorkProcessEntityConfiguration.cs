@@ -12,7 +12,7 @@ internal class WorkProcessEntityConfiguration : IEntityTypeConfiguration<WorkPro
         builder.ToTable(nameof(WorkProcess).Pluralize().Pascalize(), TalentTrackerDBContext.DEFAULT_SCHEMA);
 
         // Primary Key
-        builder.HasKey(x => x.WorkProcessGuid);
+        builder.HasKey(x => x.Id);
 
         // Properties
         builder.Property(x => x.WorkProcessGuid)
@@ -24,7 +24,7 @@ internal class WorkProcessEntityConfiguration : IEntityTypeConfiguration<WorkPro
         // One-to-Many relationship with WorkProcessDetail
         builder.HasMany(x => x.WorkProcessDetails)
                .WithOne(d => d.WorkProcess)
-               .HasForeignKey(d => d.WorkProcessGuid)
+               .HasForeignKey(d => d.WorkProcessID)
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(x => x.WorkProcessIngredients)

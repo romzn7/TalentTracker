@@ -36,6 +36,7 @@ public class TalentTrackerDBContext : DbContextBase<TalentTrackerDBContext>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
         modelBuilder
            .ApplyConfiguration(new EventLogEntityConfiguration())
            .ApplyConfiguration(new EventTypeEntityConfiguration())

@@ -5,7 +5,10 @@ namespace TalentTracker.Domain.Aggregates.Container.Entities;
 
 public class WorkProcessDetail : AuditableEntity, IAggregateRoot
 {
-    public Guid WorkProcessGuid { get; private set; }
+    public Guid WorkProcessDetailGuid { get; private set; }
+
+    public long WorkProcessID { get; private set; }
+
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
     public decimal TotalAlcohol { get; private set; }
