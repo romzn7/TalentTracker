@@ -12,7 +12,7 @@ using TalentTracker.Infrastructure;
 namespace TalentTracker.Infrastructure.Migrations
 {
     [DbContext(typeof(TalentTrackerDBContext))]
-    [Migration("20241115095514_AlcoholEntitesAdded")]
+    [Migration("20241115101422_AlcoholEntitesAdded")]
     partial class AlcoholEntitesAdded
     {
         /// <inheritdoc />
@@ -131,6 +131,9 @@ namespace TalentTracker.Infrastructure.Migrations
                     b.Property<DateTime>("AddedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("ContainerId")
+                        .HasColumnType("bigint");
+
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
@@ -144,6 +147,8 @@ namespace TalentTracker.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ContainerId");
 
                     b.ToTable("WorkProcesses", "tt");
                 });
@@ -207,9 +212,6 @@ namespace TalentTracker.Infrastructure.Migrations
                     b.Property<DateTime>("AddedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("ContainerId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -232,8 +234,6 @@ namespace TalentTracker.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ContainerId");
 
                     b.HasIndex("IngredientID");
 
@@ -375,6 +375,17 @@ namespace TalentTracker.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TalentTracker.Domain.Aggregates.Container.Entities.WorkProcess", b =>
+                {
+                    b.HasOne("TalentTracker.Domain.Aggregates.Container.Entities.Container", "Container")
+                        .WithMany("WorkProcesses")
+                        .HasForeignKey("ContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Container");
+                });
+
             modelBuilder.Entity("TalentTracker.Domain.Aggregates.Container.Entities.WorkProcessDetail", b =>
                 {
                     b.HasOne("TalentTracker.Domain.Aggregates.Container.Entities.WorkProcess", "WorkProcess")
@@ -388,10 +399,6 @@ namespace TalentTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("TalentTracker.Domain.Aggregates.Container.Entities.WorkProcessIngredient", b =>
                 {
-                    b.HasOne("TalentTracker.Domain.Aggregates.Container.Entities.Container", null)
-                        .WithMany("ContainerIngredients")
-                        .HasForeignKey("ContainerId");
-
                     b.HasOne("TalentTracker.Domain.Aggregates.Container.Enumerations.Ingredient", "Ingredient")
                         .WithMany()
                         .HasForeignKey("IngredientID")
@@ -472,7 +479,7 @@ namespace TalentTracker.Infrastructure.Migrations
 
             modelBuilder.Entity("TalentTracker.Domain.Aggregates.Container.Entities.Container", b =>
                 {
-                    b.Navigation("ContainerIngredients");
+                    b.Navigation("WorkProcesses");
                 });
 
             modelBuilder.Entity("TalentTracker.Domain.Aggregates.Container.Entities.WorkProcess", b =>

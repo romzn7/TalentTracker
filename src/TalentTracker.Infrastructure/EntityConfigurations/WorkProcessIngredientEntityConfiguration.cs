@@ -19,8 +19,6 @@ internal class WorkProcessIngredientEntityConfiguration : IEntityTypeConfigurati
         builder.Property(x => x.WorkProcessIngredientGUID)
             .IsRequired();
 
-        builder.Property(x => x.WorkProcessID)
-            .IsRequired();
 
         builder.Property(x => x.IngredientID)
             .IsRequired();

@@ -11,10 +11,7 @@ public class Container : AuditableEntity, IAggregateRoot
     }
     public Guid ContainerGUID { get; private set; }
     public string Name { get; private set; }
-    public List<WorkProcessIngredient> ContainerIngredients
-    {
-        get; private set;
-    }
+    public List<WorkProcess> WorkProcesses { get; private set; } = new();
 
     public Container(string name)
     {

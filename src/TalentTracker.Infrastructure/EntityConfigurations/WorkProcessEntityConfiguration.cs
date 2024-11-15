@@ -31,5 +31,9 @@ internal class WorkProcessEntityConfiguration : IEntityTypeConfiguration<WorkPro
                .WithOne() 
                .HasForeignKey(wpi => wpi.WorkProcessID)
                .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(wp => wp.Container)
+           .WithMany(c => c.WorkProcesses)
+           .HasForeignKey(wp => wp.ContainerId);
     }
 }

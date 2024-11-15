@@ -6,10 +6,13 @@ namespace TalentTracker.Domain.Aggregates.Container.Entities;
 public class WorkProcess : AuditableEntity, IAggregateRoot
 {
     public Guid WorkProcessGuid { get; private set; }
+    public long ContainerId { get; set; }
     public int WorkProcessCount { get; private set; }
 
 
     // Navigation property for WorkProcessDetails & WorkProcessIngredients
+
+    public Container Container { get; private set; }
     public List<WorkProcessDetail> WorkProcessDetails { get; private set; } = new List<WorkProcessDetail>();
     public List<WorkProcessIngredient> WorkProcessIngredients { get; private set; } = new List<WorkProcessIngredient>();
 

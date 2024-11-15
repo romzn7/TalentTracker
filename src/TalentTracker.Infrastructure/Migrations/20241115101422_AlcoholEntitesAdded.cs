@@ -64,6 +64,7 @@ namespace TalentTracker.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WorkProcessGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ContainerId = table.Column<long>(type: "bigint", nullable: false),
                     WorkProcessCount = table.Column<int>(type: "int", nullable: false),
                     AddedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddedBy = table.Column<int>(type: "int", nullable: false),
@@ -73,6 +74,13 @@ namespace TalentTracker.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkProcesses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkProcesses_Containers_ContainerId",
+                        column: x => x.ContainerId,
+                        principalSchema: "tt",
+                        principalTable: "Containers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -120,7 +128,6 @@ namespace TalentTracker.Infrastructure.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     WorkProcessId = table.Column<long>(type: "bigint", nullable: false),
-                    ContainerId = table.Column<long>(type: "bigint", nullable: true),
                     AddedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddedBy = table.Column<int>(type: "int", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -129,12 +136,6 @@ namespace TalentTracker.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkProcessIngredients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_WorkProcessIngredients_Containers_ContainerId",
-                        column: x => x.ContainerId,
-                        principalSchema: "tt",
-                        principalTable: "Containers",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_WorkProcessIngredients_Ingredients_IngredientID",
                         column: x => x.IngredientID,
@@ -165,9 +166,9 @@ namespace TalentTracker.Infrastructure.Migrations
                 column: "WorkProcessID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkProcessIngredients_ContainerId",
+                name: "IX_WorkProcesses_ContainerId",
                 schema: "tt",
-                table: "WorkProcessIngredients",
+                table: "WorkProcesses",
                 column: "ContainerId");
 
             migrationBuilder.CreateIndex(
@@ -205,15 +206,15 @@ namespace TalentTracker.Infrastructure.Migrations
                 schema: "tt");
 
             migrationBuilder.DropTable(
-                name: "Containers",
-                schema: "tt");
-
-            migrationBuilder.DropTable(
                 name: "Ingredients",
                 schema: "tt");
 
             migrationBuilder.DropTable(
                 name: "WorkProcesses",
+                schema: "tt");
+
+            migrationBuilder.DropTable(
+                name: "Containers",
                 schema: "tt");
         }
     }
